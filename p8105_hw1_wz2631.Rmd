@@ -1,0 +1,50 @@
+---
+title: "p8105_hw1_wz2631"
+author: "Wenjia Zhu"
+date: "2022-09-17"
+output: html_document
+
+---
+#Here is the solution of problem1.
+```{r warning = FALSE}
+data("penguins", package = "palmerpenguins")
+  head(penguins)
+  nrow(penguins)
+  ncol(penguins)
+  mean(penguins$flipper_length_mm,na.rm = TRUE)
+library(ggplot2)
+  ggplot(data = penguins, mapping = aes(x = bill_length_mm, y = flipper_length_mm, colour = species)) + geom_point(size = 1)
+  ggsave("penguin_flipper_to_bill.png")
+```
+
+#Here is the solution of problem2.
+```{r}
+library(tidyverse)
+set.seed(1)
+hw1_df <- tibble(
+  vec_numeric <- rnorm(10),
+  vec_logical <- vec_numeric > 0,
+  vec_character <- c("a","b","c","d","e","f","g","h","i","j"),
+  vec_factor <- factor(c("aa","bb","cc","aa","bb","cc","aa","bb","cc","aa"))
+)
+print(hw1_df)
+levels(pull(hw1_df,var = -1))
+
+mean_numeric <- mean(pull(hw1_df,var = 1))  
+  mean_numeric
+mean_logical <- mean(pull(hw1_df,var = 2))
+  mean_logical
+mean_character <- mean(pull(hw1_df,var = -2))
+  mean_character
+mean_factor <- mean(pull(hw1_df,var = -1))
+  mean_factor
+```
+The "mean()" function gets the mean of numeric variable and logical variable respectively, but it fails to calculate the mean of character variable and factor variable. Warning occurs as "argument is not numeric or logical: returning na", meaning neither character variable nor factor variable has numeric values. 
+```{r eval = FALSE}
+as.numeric(pull(hw1_df,var = 2))
+as.numeric(pull(hw1_df,var = -2))
+as.numeric(pull(hw1_df,var = -1))
+```
+The "as.numeric()" function successfully converts logical variable, illustrating that the "Y" and "N" are converted to numeric values 1 and 0 when performing numerical operations. 
+The character variable cannot be converted to numeric values and the warning occurs like "NAs introduced by coercion".
+For the factor variable, however, the warning doesn't occur and the values equal to the levels of each element in this factor variable.  
